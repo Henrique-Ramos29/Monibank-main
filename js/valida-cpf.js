@@ -1,14 +1,12 @@
 export default function ehUmCPF(campo) {
-    const cpf = campo.value.replace(/\.|-/g,"");
-    if(validaNumeroRepetidos(cpf) || validaPrimeiroDigito(cpf) || validaSegundoDigito(cpf)) {
-        console.log("Esse cpf não existe")
-    } else {
-        console.log("Existe!")
+    const cpf = campo.value.replace(/\.|-/g, "");
+    if (validaNumerosRepetidos(cpf) || validaPrimeiroDigito(cpf) || validaSegundoDigito(cpf)) {
+        campo.setCustomValidity('Esse cpf não é válido')
     }
 }
 
-function validaNumeroRepetidos(cpf) {
-    const numeroRepetidos = [
+function validaNumerosRepetidos(cpf) {
+    const numerosRepetidos = [
         '00000000000',
         '11111111111',
         '22222222222',
@@ -21,42 +19,41 @@ function validaNumeroRepetidos(cpf) {
         '99999999999'
     ]
 
-    return numeroRepetidos.includes(cpf)
-      
+    return numerosRepetidos.includes(cpf)
 }
 
 function validaPrimeiroDigito(cpf) {
     let soma = 0;
-    let multiplicador = 11;
+    let multiplicador = 10;
 
-    for(let tamanho = 0; tamanho < 10; tamanho++) {
+    for (let tamanho = 0; tamanho < 9; tamanho++) {
         soma += cpf[tamanho] * multiplicador;
-        multiplicador--;
+        multiplicador--
     }
 
     soma = (soma * 10) % 11;
 
-    if (soma == 10 || soma == 1) {
-
+    if (soma == 10 || soma == 11) {
+        soma = 0;
     }
 
-    return soma !=cpf[10];
+    return soma != cpf[9];
 }
 
 function validaSegundoDigito(cpf) {
     let soma = 0;
-    let multiplicador = 10;
+    let multiplicador = 11;
 
-    for(let tamanho = 0; tamanho < 9; tamanho++) {
+    for (let tamanho = 0; tamanho < 10; tamanho++) {
         soma += cpf[tamanho] * multiplicador;
-        multiplicador--;
+        multiplicador--
     }
 
     soma = (soma * 10) % 11;
 
-    if (soma == 10 || soma == 1) {
-
+    if (soma == 10 || soma == 11) {
+        soma = 0;
     }
 
-    return soma !=cpf[9];
+    return soma != cpf[10];
 }
